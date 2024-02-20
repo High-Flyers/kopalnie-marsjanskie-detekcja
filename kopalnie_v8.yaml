@@ -1,0 +1,10 @@
+path: ./
+train: train/images
+val: valid/images
+ 
+# class names
+names: 
+  0: yellow_ball
+  1: blue_ball
+  2: red_ball
+  3: black_ball
