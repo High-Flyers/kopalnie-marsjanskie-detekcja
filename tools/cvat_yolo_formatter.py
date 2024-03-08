@@ -26,48 +26,48 @@ def format(
     # add cvat dir validation
     # add video dir validation
 
-    # img_dir = output_dir / "images"
-    # img_dir.mkdir()
-    # img_dir_train = img_dir / "train"
-    # img_dir_train.mkdir()
-    # img_dir_valid = img_dir / "valid"
-    # img_dir_valid.mkdir()
+    img_dir = output_dir / "images"
+    img_dir.mkdir()
+    img_dir_train = img_dir / "train"
+    img_dir_train.mkdir()
+    img_dir_valid = img_dir / "valid"
+    img_dir_valid.mkdir()
 
-    # labels_dir = output_dir / "labels"
-    # labels_dir.mkdir()
-    # labels_dir_train = labels_dir / "train"
-    # labels_dir_train.mkdir()
-    # labels_dir_valid = labels_dir / "valid"
-    # labels_dir_valid.mkdir()
+    labels_dir = output_dir / "labels"
+    labels_dir.mkdir()
+    labels_dir_train = labels_dir / "train"
+    labels_dir_train.mkdir()
+    labels_dir_valid = labels_dir / "valid"
+    labels_dir_valid.mkdir()
 
-    # copy_tree(
-    #     (cvat_dir / "obj_train_data").absolute().as_posix(),
-    #     labels_dir_train.absolute().as_posix(),
-    # )  # copies frame txt files into labels directory
+    copy_tree(
+        (cvat_dir / "obj_train_data").absolute().as_posix(),
+        labels_dir_train.absolute().as_posix(),
+    )  # copies frame txt files into labels directory
 
-    # video_files_in_order = sorted(video_dir.iterdir())
+    video_files_in_order = sorted(video_dir.iterdir())
 
-    # count = 0
-    # for video in video_files_in_order:
-    #     frames_number = cut_to_frames(
-    #         video.absolute().as_posix(),
-    #         img_dir_train.absolute().as_posix(),
-    #         count_from=count,
-    #     )
-    #     count += frames_number
-    # count -= 1
+    count = 0
+    for video in video_files_in_order:
+        frames_number = cut_to_frames(
+            video.absolute().as_posix(),
+            img_dir_train.absolute().as_posix(),
+            count_from=count,
+        )
+        count += frames_number
+    count -= 1
 
-    # valid_files_number = int(count * valid_ratio)
-    # for number in range(valid_files_number):
-    #     filename = f"frame_{(count - number):06}"
-    #     shutil.move(
-    #         (img_dir_train / (filename + ".jpg")).absolute().as_posix(),
-    #         (img_dir_valid / (filename + ".jpg")).absolute().as_posix(),
-    #     )
-    #     shutil.move(
-    #         (labels_dir_train / (filename + ".txt")).absolute().as_posix(),
-    #         (labels_dir_valid / (filename + ".txt")).absolute().as_posix(),
-    #     )
+    valid_files_number = int(count * valid_ratio)
+    for number in range(valid_files_number):
+        filename = f"frame_{(count - number):06}"
+        shutil.move(
+            (img_dir_train / (filename + ".jpg")).absolute().as_posix(),
+            (img_dir_valid / (filename + ".jpg")).absolute().as_posix(),
+        )
+        shutil.move(
+            (labels_dir_train / (filename + ".txt")).absolute().as_posix(),
+            (labels_dir_valid / (filename + ".txt")).absolute().as_posix(),
+        )
 
     create_yaml_file(cvat_dir, output_dir)
 
