@@ -5,3 +5,5 @@ Komenda do uruchomienia modelu do trenowania:
 yolo task=detect mode=train model=yolov8n.pt imgsz=640 data=kopalnie_v8.yaml epochs=50 batch=16 name={name} cache 
 ```
 Komenda powinna być uruchomiona z poziomu katalogu zawierającego plik `kopalnie_v8.yaml` (katalog `model`).
+
+[Plan projektu](https://app.clickup.com/9005008627/v/b/6-901202027603-2)
