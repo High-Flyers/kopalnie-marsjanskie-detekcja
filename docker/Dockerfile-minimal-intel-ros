@@ -1,0 +1,13 @@
+FROM ros:noetic
+
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+    build-essential \
+    wget \
+    git \
+    cmake \
+    python3-catkin-tools \
+    mesa-utils \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install ultralytics
