@@ -29,4 +29,4 @@ WORKDIR ws/src
 ENV ROS_WORKSPACE=/home/docker/ws
 RUN catkin init
 
-WORKDIR $ROS_WORKSPACE/src
+WORKDIR $ROS_WORKSPACE

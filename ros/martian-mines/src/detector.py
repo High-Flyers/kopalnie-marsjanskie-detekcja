@@ -4,10 +4,10 @@ import rospy
 import cv2
 from ultralytics import YOLO
 from cv_bridge import CvBridge
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, NavSatFix
 
 
-class VideoSubscriber:
+class Detector:
     def __init__(self):
         rospy.init_node("video_subscriber", anonymous=True)
 
@@ -18,9 +18,14 @@ class VideoSubscriber:
         self.yolo_model = YOLO(model_path, verbose=True)
 
         # Subscribe to the video topic
-        self.image_sub = rospy.Subscriber("/uav0/camera/image_raw", Image, self.callback)
+        self.image_sub = rospy.Subscriber(
+            "/uav0/camera/image_raw", Image, self.image_callback
+        )
+        self.global_pos_sub = rospy.Subscriber(
+            "/uav0/mavros/global_position/global", NavSatFix, self.global_pos_callback
+        )
 
-    def callback(self, msg):
+    def image_callback(self, msg):
         try:
             # Convert ROS Image message to OpenCV image
             cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
@@ -37,11 +42,24 @@ class VideoSubscriber:
         except Exception as e:
             rospy.logerr("Error in ROS Image to OpenCV image callback: %s", e)
 
+    def global_pos_callback(self, msg):
+        latitude = msg.latitude
+        longitude = msg.longitude
+        altitude = msg.altitude
+
+        rospy.loginfo_throttle(
+            1,
+            "Received global position: Latitude: %s, Longitude: %s, Altitude: %s",
+            latitude,
+            longitude,
+            altitude,
+        )
+
     def run(self):
         rospy.spin()
 
 
 if __name__ == "__main__":
-    video_subscriber = VideoSubscriber()
+    video_subscriber = Detector()
     video_subscriber.run()
     cv2.destroyAllWindows()
