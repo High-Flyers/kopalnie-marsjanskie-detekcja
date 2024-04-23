@@ -24,7 +24,7 @@ munkres==1.1.4
 networkx==3.1
 numexpr==2.8.7
 numpy==1.26.4
-opencv-python==4.9.0
+opencv-python==4.9.0.*
 packaging==23.1
 pandas==2.2.1
 pillow==10.2.0
@@ -46,7 +46,7 @@ six==1.16.0
 sympy==1.12
 tomlkit==0.11.1
 torch==2.1.2
-torchvision==0.16.1+b88453f
+torchvision==0.16.2
 tqdm==4.65.0
 typing_extensions==4.9.0
 tzdata==2023.3
@@ -54,3 +54,4 @@ ultralytics==8.1.16
 urllib3==2.1.0
 wheel==0.41.2
 wrapt==1.14.1
+imagezmq==1.1.1
