@@ -10,6 +10,7 @@ import shutil
 
 from video_to_frames import cut_to_frames
 
+VIDEO_FORMATS = (".mp4", ".avi", ".amv", ".wmv")
 
 def format(
     video_dir: str, cvat_dir: str, output_dir: str, valid_ratio: float = 0.2
@@ -22,9 +23,10 @@ def format(
         if not dirpath.is_dir():
             raise ValueError(f"{dirpath} is not a valid directory path.")
 
-    # add config file validation
-    # add cvat dir validation
-    # add video dir validation
+    if any(file.suffix not in VIDEO_FORMATS for file in video_dir.iterdir() if file.is_file()):
+        raise ValueError(f"Files inside {video_dir} must be in one of {VIDEO_FORMATS} formats.")
+
+    _validate_cvat_dir(cvat_dir)
 
     img_dir = output_dir / "images"
     img_dir.mkdir()
@@ -75,7 +77,7 @@ def format(
 def create_yaml_file(
     cvat_dir: Path, output_dir: Path, name: str = "model_v8.yaml"
 ) -> None:
-    path = cvat_dir.absolute().as_posix()
+    path = output_dir.absolute().as_posix()
 
     class_names = []
     with (cvat_dir / "obj.names").open() as file:
@@ -93,7 +95,14 @@ names:
     with open(f"{output_dir}/model_v8.yaml", "w") as file:
         file.write(content)
     
-    
+def _validate_cvat_dir(cvat_dir: Path) -> None:
+    if not any(file.match("*/obj.names") for file in cvat_dir.iterdir()):
+        raise ValueError(f"{cvat_dir} doesn't contain required obj.names file.")
+    if not any(file.match("*/obj_train_data") for file in cvat_dir.iterdir()): 
+        raise ValueError(f"{cvat_dir} doesn't contain required obj_train_data directory.")
+    if not all(file.match("*/frame_[0-9][0-9][0-9][0-9][0-9][0-9].txt") for file in (cvat_dir / "obj_train_data").iterdir()):
+        raise ValueError(f"Frame files {cvat_dir / 'obj_train_data'} are named incorrectly.")
+        
 
 
 if __name__ == "__main__":
