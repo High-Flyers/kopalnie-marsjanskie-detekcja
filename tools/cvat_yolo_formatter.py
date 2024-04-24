@@ -75,7 +75,7 @@ def format(
 def create_yaml_file(
     cvat_dir: Path, output_dir: Path, name: str = "model_v8.yaml"
 ) -> None:
-    path = cvat_dir.absolute().as_posix()
+    path = output_dir.absolute().as_posix()
 
     class_names = []
     with (cvat_dir / "obj.names").open() as file:
