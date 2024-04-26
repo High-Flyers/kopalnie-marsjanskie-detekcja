@@ -8,6 +8,10 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
     python3-catkin-tools \
     mesa-utils \
     python3-pip \
+    ros-noetic-mavros \
+    ros-noetic-gazebo-ros \
+    ros-noetic-gazebo-ros-pkgs \
+    ros-noetic-cv-bridge \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install ultralytics
@@ -25,4 +29,4 @@ WORKDIR ws/src
 ENV ROS_WORKSPACE=/home/docker/ws
 RUN catkin init
 
-WORKDIR $ROS_WORKSPACE/src
+WORKDIR $ROS_WORKSPACE
