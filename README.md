@@ -9,7 +9,7 @@ Komenda powinna być uruchomiona z poziomu katalogu zawierającego plik `kopalni
 [Plan projektu](https://app.clickup.com/9005008627/v/b/6-901202027603-2)
 
 ### Docker
-Build - if it is not avalible on docker hub or you introduced some modifications in image
+Build martian mines system image (optional) - if the newest image is not avalible on docker hub or you introduced some modifications in Dockerfile. 
 ```bash
 docker build -f docker/Dockerfile-minimal-intel-ros -t highflyers/martian-minimal-intel-ros .
 ```
@@ -19,7 +19,7 @@ Run uav_simulation container according to a readme from repo [uav_simulation](ht
 Run the container with martian mines main system:
 
 ```bash
-    # replace <path_to_repo> with the absolute path, for example: /home/user/Documents/repos/martian-mines-object-detection
+    # replace <path_to_repo> with the absolute path to your repo, for example: /home/user/Documents/repos/martian-mines-object-detection
 docker run --privileged --rm --gpus all -it --net host --ipc host \                  
     -e DISPLAY=${DISPLAY} \
     -e NVIDIA_VISIBLE_DEVICES=all \

@@ -5,6 +5,7 @@ import cv2
 from ultralytics import YOLO
 from cv_bridge import CvBridge
 from sensor_msgs.msg import Image, NavSatFix
+from std_msgs.msg import Float64
 
 
 class Detector:
@@ -24,6 +25,9 @@ class Detector:
         self.global_pos_sub = rospy.Subscriber(
             "/uav0/mavros/global_position/global", NavSatFix, self.global_pos_callback
         )
+        self.rel_alt_sub = rospy.Subscriber(
+            "/uav0/mavros/global_position/rel_alt", Float64, self.rel_alt_callback
+        )
 
     def image_callback(self, msg):
         try:
@@ -40,20 +44,20 @@ class Detector:
                 rospy.signal_shutdown("User pressed 'q'")
 
         except Exception as e:
-            rospy.logerr("Error in ROS Image to OpenCV image callback: %s", e)
+            rospy.logerr(f"Error in ROS Image to OpenCV image callback: {e}")
 
     def global_pos_callback(self, msg):
         latitude = msg.latitude
         longitude = msg.longitude
-        altitude = msg.altitude
+        altitude_amsl = msg.altitude
 
         rospy.loginfo_throttle(
             1,
-            "Received global position: Latitude: %s, Longitude: %s, Altitude: %s",
-            latitude,
-            longitude,
-            altitude,
+            f"Received global position: Latitude: {latitude}, Longitude: {longitude}, Altitude(AMSL): {altitude_amsl}",
         )
+
+    def rel_alt_callback(self, msg):
+        rospy.loginfo_throttle(1, f"Received relative Altitude(AGL): {msg.data}")
 
     def run(self):
         rospy.spin()
